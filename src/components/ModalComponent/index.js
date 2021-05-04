@@ -19,15 +19,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ModalComponent() { 
+export default function ModalComponent({ children }) { 
   const classes = useStyles();
 
   const { open, handleClose } = useContext(ModalContext)
 
   return (
     <Modal
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
       className={classes.modal}
       open={open}
       onClose={handleClose}
@@ -39,8 +37,7 @@ export default function ModalComponent() {
     >
       <Fade in={open}>
         <div className={classes.paper}>
-          <h2 id="transition-modal-title">Transition modal</h2>
-          <p id="transition-modal-description">react-transition-group animates me.</p>
+          {children}
         </div>
       </Fade>
     </Modal>
