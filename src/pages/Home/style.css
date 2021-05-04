@@ -11,3 +11,20 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.containerNewBoard {
+  min-width: 310px;
+}
+
+.containerNewBoard  h3{
+  margin-bottom: 20px;
+}
+
+.containerNewBoard .controllInput{
+  margin-bottom: 20px;
+}
+
+.containerNewBoard .buttonSubmit {
+  display: flex;
+  justify-content: center;
+}

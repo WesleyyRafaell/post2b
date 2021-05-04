@@ -1,15 +1,13 @@
 import Board from '../../components/Board';
-import Header from '../../components/Header';
+import Input from '../../components/Input';
+import Button from '@material-ui/core/Button';
 import ModalComponent from '../../components/ModalComponent';
-import { ModalProvider } from '../../contexts/ModalContext';
 
 import './style.css'
 
 export default function Home() {
   return (
     <>
-      <Header />
-      
       <div className="containerBoards">
         <h2>Meus quadros</h2>
         <div className="boards">
@@ -20,8 +18,19 @@ export default function Home() {
       </div>
 
       <ModalComponent>
-        <h2>Novo quadro</h2>
-        <p>react-transition-group animates me.</p>
+        <div className="containerNewBoard">
+          <h3>Novo quadro</h3>
+          <form action="">
+            <div className="controllInput">
+              <Input label="Nome" />
+            </div>
+            <div className="buttonSubmit">
+              <Button variant="contained" color="primary">
+                Criar
+              </Button>
+            </div>
+          </form>
+        </div>
       </ModalComponent>
     </>
   );
