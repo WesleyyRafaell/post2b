@@ -3,4 +3,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 3.1px 2.5px 3.2px #f5005742;
+  border-radius: 2.4px;
+  text-align: center;
+  padding: 7.4px;
 }

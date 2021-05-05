@@ -1,8 +1,6 @@
 import React, { useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import { ModalContext } from '../../contexts/ModalContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ModalComponent({ children }) { 
+export default function ModalComponent({ children }) {
   const classes = useStyles();
 
   const { open, handleClose } = useContext(ModalContext)
@@ -29,17 +27,10 @@ export default function ModalComponent({ children }) {
       className={classes.modal}
       open={open}
       onClose={handleClose}
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
     >
-      <Fade in={open}>
-        <div className={classes.paper}>
-          {children}
-        </div>
-      </Fade>
+      <div className={classes.paper}>
+        {children}
+      </div>
     </Modal>
   )
 }

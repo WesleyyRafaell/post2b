@@ -1,7 +1,7 @@
 import TextField from '@material-ui/core/TextField';
 
-export default function Input({label}) {
+export default function Input({label, ...field}) {
   return(
-    <TextField  label={label} variant="outlined" fullWidth={true} />
+    <TextField label={label} {...field} variant="outlined" fullWidth={true} />
   )
 } 
