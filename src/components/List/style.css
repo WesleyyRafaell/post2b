@@ -1,0 +1,22 @@
+.listTasks {
+  margin: 0 40px;
+  min-width: 260px;
+}
+
+.listTasks header {
+  text-align: center;
+  background: var(--color-second);
+  padding: 7.6px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.listTasks header h3 {
+  color: var(--color-tertiary);
+}
+
+.listTasks ul {
+  list-style: none;
+  background: #EBECF0;
+  padding: 10px;
+}

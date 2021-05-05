@@ -12,7 +12,7 @@ export default function Header({ button }) {
   const { handleOpen } = useContext(ModalContext)
 
   return (
-    <header>
+    <header className="mainHeader">
       <div />
       <Link to="/">
         <img src={logo} alt="logo post2b" />
