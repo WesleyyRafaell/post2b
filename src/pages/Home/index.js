@@ -1,23 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Board from '../../components/Board';
 import Input from '../../components/Input';
 import Button from '@material-ui/core/Button';
 import ModalComponent from '../../components/ModalComponent';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import Header from '../../components/Header';
 import TextField from '@material-ui/core/TextField';
+import { useHistory } from 'react-router-dom';
 import * as yup from "yup";
 
 import firebase from '../../services/firebaseConnection';
 
 import './style.css'
+import { ModalContext } from '../../contexts/ModalContext';
 
 const schema = yup.object().shape({
   board: yup.string().required('O campo não pode ficar vazio'),
 })
 
 export default function Home() {
+  const history = useHistory();
   const [boards, setBoards] = useState([]);
+  const { handleClose } = useContext(ModalContext)
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
@@ -56,7 +61,10 @@ export default function Home() {
       Title: board
     })
     .then(() => {
-      console.log('dados cadastrados com sucesso')
+      console.log('dados cadastrados com sucesso');
+      
+      handleClose();
+      history.push('/workspace');
     })
     .catch((error) => {
       console.error('deu ruim:', error)
@@ -65,6 +73,7 @@ export default function Home() {
 
   return (
     <>
+      <Header button={true} />
       <div className="containerBoards">
         <h2>Meus quadros</h2>
         <div className="boards">

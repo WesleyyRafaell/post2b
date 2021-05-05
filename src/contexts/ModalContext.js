@@ -5,11 +5,11 @@ export const ModalContext = createContext();
 export function ModalProvider({ children }) {
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => {
+  function handleOpen(){
     setOpen(true);
   };
 
-  const handleClose = () => {
+  function handleClose() {
     setOpen(false);
   };
 
