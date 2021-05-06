@@ -1,0 +1,16 @@
+.card {
+  background: #fff;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 1px 1px 1px #b3b3b3;
+}
+
+.card p:first-child{
+  color: #05075f;
+  margin-bottom: 6.5px;
+}
+
+.card p:last-child{
+  font-size: 13.1px;
+}

@@ -1,3 +1,12 @@
+.containerWorkspace {
+  padding: 20px;
+}
+
+.containerWorkspace h2 {
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
 .containerTasks {
   display: flex;
   padding: 30px;
