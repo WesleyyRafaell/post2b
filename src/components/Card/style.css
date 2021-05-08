@@ -14,3 +14,15 @@
 .card p:last-child{
   font-size: 13.1px;
 }
+
+.cardDragging{
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: grabbing;
+}
+
+.cardDragging p {
+  opacity: 0;
+}

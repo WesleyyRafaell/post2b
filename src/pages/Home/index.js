@@ -1,27 +1,28 @@
 import { useContext, useEffect, useState } from 'react';
-import Board from '../../components/Board';
-import Input from '../../components/Input';
-import Button from '@material-ui/core/Button';
-import ModalComponent from '../../components/ModalComponent';
-import { useForm, Controller } from "react-hook-form";
+
 import { yupResolver } from '@hookform/resolvers/yup';
-import Header from '../../components/Header';
-import TextField from '@material-ui/core/TextField';
+import { useForm, Controller } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
-import * as yup from "yup";
+import Button from '@material-ui/core/Button';
 
 import firebase from '../../services/firebaseConnection';
-
-import './style.css'
 import { ModalContext } from '../../contexts/ModalContext';
 
-const schema = yup.object().shape({
-  board: yup.string().required('O campo não pode ficar vazio'),
-})
+// components 
+import Board from '../../components/Board';
+import Input from '../../components/Input';
+import ModalComponent from '../../components/ModalComponent';
+import Header from '../../components/Header';
+
+import './style.css';
+
+import schema from '../../services/schema';
 
 export default function Home() {
   const history = useHistory();
+
   const [boards, setBoards] = useState([]);
+
   const { handleClose } = useContext(ModalContext)
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm({
@@ -74,6 +75,7 @@ export default function Home() {
   return (
     <>
       <Header button={true} />
+
       <div className="containerBoards">
         <h2>Meus quadros</h2>
         <div className="boards">
@@ -92,11 +94,11 @@ export default function Home() {
                 render={({ field }) =>
                   <Input label="Nome" {...field} />
                 }
-                name="board"
+                name="input"
                 control={control}
                 defaultValue=''
               />
-              {errors.board?.message}
+              {errors.input?.message}
             </div>
             <div className="buttonSubmit">
               <Button type="submit" variant="contained" color="primary">

@@ -7,7 +7,7 @@ export default function loadLists() {
         {
           id: 1,
           content: 'Estudar módulo 01 de NodeJS',
-        },
+        }, 
         {
           id: 2,
           content: 'Criar vídeo para o Youtube ensinando a recriar a interface do Pipefy',

@@ -1,38 +1,65 @@
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@material-ui/core';
-import Input from '../Input';
-import { Controller, useForm } from 'react-hook-form';
-import Card from '../Card';
-import * as yup from "yup";
-
-import './style.css';
-import ModalComponent from '../ModalComponent';
 import { useContext } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
+import { Button } from '@material-ui/core';
+import { useDrop } from 'react-dnd';
+
 import { ModalContext } from '../../contexts/ModalContext';
 
-const schema = yup.object().shape({
-  board: yup.string().required('O campo não pode ficar vazio'),
-})
+// components 
+import Card from '../Card';
+import Input from '../Input';
+import ModalComponent from '../ModalComponent';
+import { DragContext } from '../../contexts/DragContext';
 
-export default function List({ newTask, title, data }) {
+import './style.css';
 
-  const { handleOpen } = useContext(ModalContext)
+import schema from '../../services/schema';
+
+export default function List({ newTask, title, data, listIndex }) {
+
+  const { handleOpen } = useContext(ModalContext);
+  const { add } = useContext(DragContext)
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
   });
 
 
+  const [, dropRef] = useDrop({
+    accept: 'CARD',
+    hover(item) {
+      const draggedListIndex = item.listIndex;
+      const targetListIndex = listIndex;
+      
+      const draggedIndex = item.index;
+      
+      if(draggedListIndex === targetListIndex) {return}
+
+      add(draggedListIndex, targetListIndex, draggedIndex)
+
+    }
+  })
+
   return (
     <div className="listTasks">
       <header>
         <h3>{title}</h3>
       </header>
-      <ul>
-        {data.map(item => (
-          <li><Card key={item.id} content={item.content} /></li>
-        ))}
+      <ul ref={dropRef}>
+        {data.map((item, index) => (
+          <li key={item.id}>
+            <Card
+              id={item.id}
+              index={index}
+              content={item.content}
+              listIndex={listIndex}
+            />
+          </li>
+        ))
+        }
       </ul>
+      
       {newTask ?
         <div className="formNewTask">
           <div className="buttonNewTask">
@@ -49,7 +76,7 @@ export default function List({ newTask, title, data }) {
                     render={({ field }) =>
                       <Input label="Título" {...field} />
                     }
-                    name="board"
+                    name="input"
                     control={control}
                     defaultValue=''
                   />
@@ -59,7 +86,7 @@ export default function List({ newTask, title, data }) {
                     render={({ field }) =>
                       <Input label="Descrição" {...field} />
                     }
-                    name="board"
+                    name="input"
                     control={control}
                     defaultValue=''
                   />

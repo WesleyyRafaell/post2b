@@ -23,6 +23,7 @@
   overflow: scroll;
   overflow-x: hidden;
   max-width: 260px;
+  min-height: 180px;
 }
 
 .listTasks ul::-webkit-scrollbar {
