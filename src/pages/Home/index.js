@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from "react-hook-form";
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 import firebase from '../../services/firebaseConnection';
@@ -37,9 +37,11 @@ export default function Home() {
             .get()
             .then((snapshot) => {
               const list = [];
-
               snapshot.forEach((doc) => {
-                list.push(doc.data().Title)
+                list.push({
+                  id: doc.id,
+                  title: doc.data().title
+                })
               })
 
               setBoards(list)
@@ -79,8 +81,13 @@ export default function Home() {
       <div className="containerBoards">
         <h2>Meus quadros</h2>
         <div className="boards">
-          {boards.map((item, index) => (
-            <Board key={index} name={item} />
+          {boards.map(({id, title}) => (
+            <Link key={id} to={{
+              pathname: '/workspace',
+              state: { id }
+            }}>
+             <Board name={title} />
+            </Link>
           ))}
         </div>
       </div>

@@ -9,11 +9,9 @@ function App() {
   return (
     <div className="App">
       <ModalProvider>
-        <DragProvider>
-          <DndProvider backend={HTML5Backend}>
-            <Routes />
-          </DndProvider>
-        </DragProvider>
+        <DndProvider backend={HTML5Backend}>
+          <Routes />
+        </DndProvider>
       </ModalProvider>
     </div>
   );
