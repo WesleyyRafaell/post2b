@@ -68,7 +68,6 @@ export default function Workspace() {
       }}>
         <div className="containerWorkspace">
           <h2>{title}</h2>
-          {console.log(lists)}
           <div className="containerTasks">
             {lists.map((item, index) => <List
               key={item.title}

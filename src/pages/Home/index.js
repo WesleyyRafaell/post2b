@@ -2,8 +2,9 @@ import { useContext, useEffect, useState } from 'react';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from "react-hook-form";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import firebase from '../../services/firebaseConnection';
 import { ModalContext } from '../../contexts/ModalContext';
@@ -18,10 +19,27 @@ import './style.css';
 
 import schema from '../../services/schema';
 
-export default function Home() {
-  const history = useHistory();
+const lists = [
+  {
+    cards: [],
+    newTask: true,
+    title: 'todo'
+  },
+  {
+    cards: [],
+    newTask: false,
+    title: 'doing'
+  },
+  {
+    cards: [],
+    newTask: false,
+    title: 'done'
+  },
+]
 
+export default function Home() {
   const [boards, setBoards] = useState([]);
+  const [reloadPage, setReloadPage] = useState(false);
 
   const { handleClose } = useContext(ModalContext)
 
@@ -45,7 +63,7 @@ export default function Home() {
               })
 
               setBoards(list)
-
+              setReloadPage(false)
             })
         }
 
@@ -53,25 +71,35 @@ export default function Home() {
     } catch (error) {
       console.log('Error:', error)
     }
-  }, [])
+  }, [reloadPage])
 
   async function handleNewBoard(data) {
-    const { board } = data;
-    
+    const { input } = data;
+
     await firebase.firestore()
-    .collection('Boards')
-    .add({
-      Title: board
-    })
-    .then(() => {
-      console.log('dados cadastrados com sucesso');
-      
-      handleClose();
-      history.push('/workspace');
-    })
-    .catch((error) => {
-      console.error('deu ruim:', error)
-    })
+      .collection('Boards')
+      .add({
+        title: input,
+        lists
+      })
+      .then(() => {
+        handleClose();
+        setReloadPage(true)
+      })
+      .catch((error) => {
+        console.error('deu ruim:', error)
+      })
+  }
+
+  async function handleDeleteBoard(idBoard) {
+    await firebase.firestore().collection('Boards').doc(idBoard)
+      .delete()
+      .then(() => {
+        setReloadPage(true)
+      })
+      .catch((error) => {
+        console.error('deu ruim:', error)
+      })
   }
 
   return (
@@ -81,13 +109,20 @@ export default function Home() {
       <div className="containerBoards">
         <h2>Meus quadros</h2>
         <div className="boards">
-          {boards.map(({id, title}) => (
-            <Link key={id} to={{
-              pathname: '/workspace',
-              state: { id }
-            }}>
-             <Board name={title} />
-            </Link>
+          {boards.map(({ id, title }) => (
+            <div key={id} className="boardItem">
+              <div className="buttonDeleteBoard" onClick={() => handleDeleteBoard(id)}>
+                <Button color="secondary">
+                  <DeleteIcon />
+                </Button>
+              </div>
+              <Link to={{
+                pathname: '/workspace',
+                state: { id }
+              }}>
+                <Board name={title} />
+              </Link>
+            </div>
           ))}
         </div>
       </div>

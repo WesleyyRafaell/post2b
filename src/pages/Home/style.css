@@ -12,6 +12,22 @@
   flex-wrap: wrap;
 }
 
+.containerBoards .boards .boardItem {
+  position: relative;
+}
+
+.containerBoards .boards .boardItem .buttonDeleteBoard {
+  position: absolute;
+  right: 0;
+  margin-top: -10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.containerBoards .boards .boardItem:hover .buttonDeleteBoard {
+  opacity: 1;
+}
+
 .containerNewBoard {
   min-width: 427.66px;
   min-height: 170.81px;
