@@ -29,7 +29,7 @@ export default function Workspace() {
           console.error('deu ruim:', error)
         })
     })()
-  }, [])
+  }, [state.id])
 
   function move(fromList, toList, from, to) {
     setLists(produce(lists, draft => {

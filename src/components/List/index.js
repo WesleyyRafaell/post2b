@@ -60,7 +60,7 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
           })
       }
     )()
-  }, [lists])
+  }, [lists, boardIndex])
 
 
   async function handleNewTask(dataForm) {
