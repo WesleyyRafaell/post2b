@@ -3,7 +3,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 import Routes from './routes';
 import './styles/global.css';
-import { DragProvider } from './contexts/DragContext';
 
 function App() {
   return (

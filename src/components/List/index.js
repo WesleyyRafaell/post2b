@@ -1,16 +1,17 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { Button } from '@material-ui/core';
 import { useDrop } from 'react-dnd';
 import { uid } from 'uid';
 import firebase from '../../services/firebaseConnection';
+import produce from 'immer';
 
 import { ModalContext } from '../../contexts/ModalContext';
 
 // components 
 import Card from '../Card';
-import Input from '../Input';
+import {Input} from '../Input';
 import ModalComponent from '../ModalComponent';
 import { DragContext } from '../../contexts/DragContext';
 
@@ -20,7 +21,7 @@ import schema from '../../services/schemas/TaskSchema';
 
 export default function List({ newTask, title, data, boardIndex, listIndex }) {
 
-  const { handleOpen } = useContext(ModalContext);
+  const { handleOpen, handleClose } = useContext(ModalContext);
   const { lists, setLists, add } = useContext(DragContext)
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm({
@@ -46,6 +47,21 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
     }
   })
 
+  useEffect(() => {
+    (
+      async () => {
+        await firebase.firestore().collection('Boards')
+          .doc(boardIndex)
+          .update({
+            lists
+          })
+          .catch((error) => {
+            console.error('deu ruim:', error)
+          })
+      }
+    )()
+  }, [lists])
+
 
   async function handleNewTask(dataForm) {
     const { titleTask, contentTask } = dataForm;
@@ -57,24 +73,12 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
       content: contentTask
     }
 
-    const newList = lists;
+    setLists(produce(lists, draft => {
+      draft[0].cards.push(item);
+    }))
 
-    newList[0].cards.push(item)
-
-    setLists(newList)
-
-
-    await firebase.firestore().collection('Boards')
-      .doc(boardIndex)
-      .update({
-        lists: newList
-      })
-      .then(() => {
-        console.log('dados cadastrados com sucesso')
-      })
-      .catch((error) => {
-        console.error('deu ruim:', error)
-      })
+    handleClose();
+    reset();
   }
 
   return (

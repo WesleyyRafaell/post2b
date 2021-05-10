@@ -1,7 +1,6 @@
+import { forwardRef } from 'react';
 import TextField from '@material-ui/core/TextField';
 
-export default function Input({label, ...field}) {
-  return(
-    <TextField label={label} {...field} variant="outlined" fullWidth={true} />
-  )
-} 
+export const Input = forwardRef(({label, ...field}, ref) => (
+  <TextField ref={ref} label={label} {...field} variant="outlined" fullWidth={true} />
+));

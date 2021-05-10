@@ -14,17 +14,16 @@ export default function Workspace() {
   const { state } = useLocation();
 
   const [lists, setLists] = useState([]);
-  const [title, setTitle] = useState('')
 
   useEffect(() => {
+
     (async function () {
       await firebase.firestore()
         .collection('Boards')
         .doc(state.id)
         .get()
         .then((snapshot) => {
-          setTitle(snapshot.data().title)
-          setLists(snapshot.data().lists)
+          setLists(snapshot.data().lists);
         })
         .catch((error) => {
           console.error('deu ruim:', error)
@@ -68,7 +67,7 @@ export default function Workspace() {
         add
       }}>
         <div className="containerWorkspace">
-          <h2>{title}</h2>
+          <h2>{state.title}</h2>
           <div className="containerTasks">
             {lists.map((item, index) => <List
               key={item.title}

@@ -7,7 +7,7 @@ import './style.css';
 export default function Card({id, index, title, content, listIndex}) {
   const ref = useRef();
 
-  const { move, add } = useContext(DragContext)
+  const { move } = useContext(DragContext)
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD',

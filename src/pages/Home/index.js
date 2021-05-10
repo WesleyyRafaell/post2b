@@ -11,7 +11,7 @@ import { ModalContext } from '../../contexts/ModalContext';
 
 // components 
 import Board from '../../components/Board';
-import Input from '../../components/Input';
+import { Input } from '../../components/Input';
 import ModalComponent from '../../components/ModalComponent';
 import Header from '../../components/Header';
 
@@ -84,6 +84,7 @@ export default function Home() {
       })
       .then(() => {
         handleClose();
+        reset();
         setReloadPage(true)
       })
       .catch((error) => {
@@ -118,7 +119,7 @@ export default function Home() {
               </div>
               <Link to={{
                 pathname: '/workspace',
-                state: { id }
+                state: { id, title }
               }}>
                 <Board name={title} />
               </Link>
