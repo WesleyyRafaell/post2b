@@ -76,3 +76,10 @@
 .containerTags .newTag .buttonSubmit{
   margin-top: 10px;
 }
+
+
+@media screen and (max-width: 360px) {
+  .modalContent {
+    width: 100%;
+  }
+}

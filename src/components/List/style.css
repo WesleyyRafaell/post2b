@@ -1,5 +1,5 @@
 .listTasks {
-  margin: 0 40px;
+  margin: 0 40px 20px 40px;
   min-width: 260px;
 }
 
@@ -68,4 +68,11 @@
 .containerNewBoard .buttonSubmit {
   display: flex;
   justify-content: center;
+}
+
+
+@media screen and (max-width: 360px){
+  .listTasks {
+    margin: 0 0 20px 0;
+  }
 }

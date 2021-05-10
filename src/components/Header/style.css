@@ -5,3 +5,9 @@ header.mainHeader {
   align-items: center;
   padding: 10px 20px;
 }
+
+@media screen and (max-width: 360px){
+  header.mainHeader {
+    flex-direction: column;
+  }
+}

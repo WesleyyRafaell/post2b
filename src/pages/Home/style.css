@@ -45,3 +45,19 @@
   display: flex;
   justify-content: center;
 }
+
+
+@media screen and (max-width: 360px){
+  .containerBoards {
+    text-align: center;
+  }
+
+  .containerBoards .boards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .containerNewBoard {
+    min-width: 0!important;
+  }
+}
