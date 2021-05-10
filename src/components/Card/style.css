@@ -53,3 +53,26 @@
   justify-content: space-around;
   padding: 10px 0;
 }
+
+.tags {
+  padding: 10px 0;
+}
+
+.tags p {
+  display: inline;
+  font-size: 12.5px;
+  background: #f50057;
+  padding: 4px;
+  border-radius: 5.6px;
+  color: #fff;
+  margin-right: 8.5px;
+}
+
+.containerTags .newTag {
+  text-align: center;
+  padding: 10px;
+}
+
+.containerTags .newTag .buttonSubmit{
+  margin-top: 10px;
+}

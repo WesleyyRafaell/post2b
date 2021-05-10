@@ -70,7 +70,8 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
     const item = {
       id: newmItemId,
       title: titleTask,
-      content: contentTask
+      content: contentTask,
+      tags: []
     }
 
     setLists(produce(lists, draft => {
@@ -96,6 +97,7 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
                 title={item.title}
                 content={item.content}
                 listIndex={listIndex}
+                tags={item.tags}
               />
             </li>
           )

@@ -6,6 +6,10 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import produce from 'immer';
+import { Controller, useForm } from 'react-hook-form';
+import { Input } from '../Input';
+import schema from '../../services/schemas/tagSchema'
+import { yupResolver } from '@hookform/resolvers/yup';
 
 
 import './style.css';
@@ -24,10 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Card({ id, index, title, content, listIndex }) {
+export default function Card({ id, index, title, content, listIndex, tags }) {
   const classes = useStyles();
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const { handleSubmit, control, formState: { errors }, reset } = useForm({
+    resolver: yupResolver(schema)
+  });
 
   const ref = useRef();
 
@@ -52,11 +60,17 @@ export default function Card({ id, index, title, content, listIndex }) {
   function handleDeleteTask() {
     setLists(produce(lists, draft => {
       draft[listIndex].cards.splice(index, 1);
-      // const task = draft[listIndex].cards[index];
-
-      // draft[listIndex].cards.push(item);
     }))
-    // console.log(lists[listIndex].cards[index])
+  }
+
+  function handleNewTag(data){
+    const { newTag } = data;
+
+    setLists(produce(lists, draft => {
+      draft[listIndex].cards[index].tags.push(newTag);
+    }))
+
+    reset()
   }
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -150,6 +164,35 @@ export default function Card({ id, index, title, content, listIndex }) {
               <div className="description">
                 <h5>Descrição</h5>
                 {content}
+              </div>
+              <div className="containerTags">
+                <h5>Tags</h5>
+                <div className="tags">
+                 {tags.map((item, index) => (
+                   <p key={index}>{item}</p>
+                 ))}
+                </div>
+                <div className="newTag">
+                  <form onSubmit={handleSubmit(handleNewTag)}>
+                    <div className="controllInput">
+                      <Controller
+                        render={({ field }) =>
+                          <Input label="Nova tag" {...field} />
+                        }
+                        name="newTag"
+                        control={control}
+                        defaultValue=''
+                        size="small"
+                      />
+                      {errors.newTag?.message}
+                    </div>
+                    <div className="buttonSubmit">
+                      <Button type="submit" variant="contained" color="primary">
+                        Criar
+                      </Button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
