@@ -107,7 +107,7 @@ export default function List({ newTask, title, data, boardIndex, listIndex }) {
           <div className="buttonNewTask">
             <Button onClick={handleOpen} variant="contained" color="primary">
               Nova tarefa
-          </Button>
+            </Button>
           </div>
           <ModalComponent>
             <div className="containerNewBoard">

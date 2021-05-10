@@ -26,3 +26,30 @@
 .cardDragging p {
   opacity: 0;
 }
+
+.modalContent {
+  width: 380px;
+}
+
+.modalContent h3 {
+  text-align: center;
+}
+
+.modalContent .description {
+  padding: 10px 0;
+}
+
+.modalContent .buttonDeleteTaskContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.deleteTaskContent p {
+  padding: 10px 0;
+}
+
+.deleteTaskContent .buttonsDeleteTask {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
