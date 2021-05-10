@@ -42,12 +42,12 @@ export default function Workspace() {
     }))
   }
 
-  function add(fromList, toList, from) {
+  function add(fromList, toList, from, to) {
     setLists(produce(lists, draft => {
-      if (draft[toList].cards.length !== 0) { return }
       const dragged = draft[fromList].cards[from];
+
       draft[fromList].cards.splice(from, 1);
-      draft[toList].cards.splice(0, 0, dragged);
+      draft[toList].cards.push(dragged);
     }))
   }
 
@@ -63,6 +63,7 @@ export default function Workspace() {
 
       <DragContext.Provider value={{
         lists,
+        setLists,
         move,
         add
       }}>
@@ -74,6 +75,7 @@ export default function Workspace() {
               title={item.title}
               data={item.cards}
               listIndex={index}
+              boardIndex={state.id}
               newTask={item.newTask}
             />)}
           </div>

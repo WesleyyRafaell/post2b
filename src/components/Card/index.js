@@ -4,10 +4,10 @@ import { DragContext } from '../../contexts/DragContext';
 
 import './style.css';
 
-export default function Card({id, index, content, listIndex}) {
+export default function Card({id, index, title, content, listIndex}) {
   const ref = useRef();
 
-  const { move } = useContext(DragContext)
+  const { move, add } = useContext(DragContext)
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'CARD',
@@ -16,7 +16,6 @@ export default function Card({id, index, content, listIndex}) {
       isDragging: monitor.isDragging(),
     })
   })
-
 
   const [, dropRef] = useDrop({
     accept: 'CARD',
@@ -29,7 +28,7 @@ export default function Card({id, index, content, listIndex}) {
       const targetIndex = index;
 
       if(draggedIndex === targetIndex && draggedListIndex === targetListIndex) {return}
-
+  
       const targetSize = ref.current.getBoundingClientRect();
       const targetCenter = (targetSize.bottom - targetSize.top) / 2;
 
@@ -47,6 +46,8 @@ export default function Card({id, index, content, listIndex}) {
 
       move(draggedListIndex, targetListIndex,  draggedIndex, targetIndex);
 
+      
+
       item.index = targetIndex;
       item.listIndex = targetListIndex;
 
@@ -57,7 +58,7 @@ export default function Card({id, index, content, listIndex}) {
 
   return(
     <div className={isDragging ? 'card cardDragging' : 'card'} ref={ref}>
-      <p><strong>Projeto 1</strong></p>
+      <p><strong>{title}</strong></p>
       <p>{content}</p>
     </div>
   ) 

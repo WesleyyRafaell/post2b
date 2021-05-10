@@ -3,6 +3,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from 'react-hook-form';
 import { Button } from '@material-ui/core';
 import { useDrop } from 'react-dnd';
+import { uid } from 'uid';
+import firebase from '../../services/firebaseConnection';
 
 import { ModalContext } from '../../contexts/ModalContext';
 
@@ -14,12 +16,12 @@ import { DragContext } from '../../contexts/DragContext';
 
 import './style.css';
 
-import schema from '../../services/schema';
+import schema from '../../services/schemas/TaskSchema';
 
-export default function List({ newTask, title, data, listIndex }) {
+export default function List({ newTask, title, data, boardIndex, listIndex }) {
 
   const { handleOpen } = useContext(ModalContext);
-  const { add } = useContext(DragContext)
+  const { lists, setLists, add } = useContext(DragContext)
 
   const { handleSubmit, control, formState: { errors }, reset } = useForm({
     resolver: yupResolver(schema)
@@ -31,15 +33,49 @@ export default function List({ newTask, title, data, listIndex }) {
     hover(item) {
       const draggedListIndex = item.listIndex;
       const targetListIndex = listIndex;
-      
-      const draggedIndex = item.index;
-      
-      if(draggedListIndex === targetListIndex) {return}
 
-      add(draggedListIndex, targetListIndex, draggedIndex)
+      const draggedIndex = item.index;
+
+      if (draggedListIndex === targetListIndex) { return }
+
+      add(draggedListIndex, targetListIndex, draggedIndex);
+
+      item.listIndex = targetListIndex;
+      item.index = 0;
 
     }
   })
+
+
+  async function handleNewTask(dataForm) {
+    const { titleTask, contentTask } = dataForm;
+    const newmItemId = uid();
+
+    const item = {
+      id: newmItemId,
+      title: titleTask,
+      content: contentTask
+    }
+
+    const newList = lists;
+
+    newList[0].cards.push(item)
+
+    setLists(newList)
+
+
+    await firebase.firestore().collection('Boards')
+      .doc(boardIndex)
+      .update({
+        lists: newList
+      })
+      .then(() => {
+        console.log('dados cadastrados com sucesso')
+      })
+      .catch((error) => {
+        console.error('deu ruim:', error)
+      })
+  }
 
   return (
     <div className="listTasks">
@@ -47,19 +83,21 @@ export default function List({ newTask, title, data, listIndex }) {
         <h3>{title}</h3>
       </header>
       <ul ref={dropRef}>
-        {data.map((item, index) => (
-          <li key={item.id}>
-            <Card
-              id={item.id}
-              index={index}
-              content={item.content}
-              listIndex={listIndex}
-            />
-          </li>
-        ))
-        }
+        {data.map((item, index) => {
+          return (
+            <li key={item.id}>
+              <Card
+                id={item.id}
+                index={index}
+                title={item.title}
+                content={item.content}
+                listIndex={listIndex}
+              />
+            </li>
+          )
+        })}
       </ul>
-      
+
       {newTask ?
         <div className="formNewTask">
           <div className="buttonNewTask">
@@ -70,26 +108,28 @@ export default function List({ newTask, title, data, listIndex }) {
           <ModalComponent>
             <div className="containerNewBoard">
               <h3>Nova tarefa</h3>
-              <form>
+              <form onSubmit={handleSubmit(handleNewTask)}>
                 <div className="controllInput">
                   <Controller
                     render={({ field }) =>
                       <Input label="Título" {...field} />
                     }
-                    name="input"
+                    name="titleTask"
                     control={control}
                     defaultValue=''
                   />
+                  {errors.titleTask?.message}
                 </div>
                 <div className="controllInput">
                   <Controller
                     render={({ field }) =>
                       <Input label="Descrição" {...field} />
                     }
-                    name="input"
+                    name="contentTask"
                     control={control}
                     defaultValue=''
                   />
+                  {errors.contentTask?.message}
                 </div>
                 <div className="buttonSubmit">
                   <Button fullWidth={true} type="submit" variant="contained" color="primary">
